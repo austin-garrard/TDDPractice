@@ -10,15 +10,9 @@ public class StringCalculator {
     public int Add(String numbers) throws NegativeArgumentException {
         Scanner scanner = getScanner(numbers);
 
-        int sum = 0;
-        List<Integer> negativeArguments = new ArrayList<Integer>();
-        while(scanner.hasNextInt()) {
-            int next = scanner.nextInt();
-            if(next < 0)
-                negativeArguments.add(next);
-            else
-                sum += next;
-        }
+        StringAdder stringAdder = new StringAdder(scanner).invoke();
+        List<Integer> negativeArguments = stringAdder.getNegativeArguments();
+        int sum = stringAdder.getSum();
 
         if(negativeArguments.size() > 0) {
             throw new NegativeArgumentException(negativeArguments);
@@ -41,4 +35,34 @@ public class StringCalculator {
         return scanner;
     }
 
+    private class StringAdder {
+        private Scanner scanner;
+        private int sum;
+        private List<Integer> negativeArguments;
+
+        public StringAdder(Scanner scanner) {
+            this.scanner = scanner;
+        }
+
+        public int getSum() {
+            return sum;
+        }
+
+        public List<Integer> getNegativeArguments() {
+            return negativeArguments;
+        }
+
+        public StringAdder invoke() {
+            sum = 0;
+            negativeArguments = new ArrayList<Integer>();
+            while(scanner.hasNextInt()) {
+                int next = scanner.nextInt();
+                if(next < 0)
+                    negativeArguments.add(next);
+                else
+                    sum += next;
+            }
+            return this;
+        }
+    }
 }
