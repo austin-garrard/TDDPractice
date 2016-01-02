@@ -59,6 +59,8 @@ public class StringCalculator {
                 int next = scanner.nextInt();
                 if(next < 0)
                     negativeArguments.add(next);
+                else if(next > 1000)
+                    continue;
                 else
                     sum += next;
             }

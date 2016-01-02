@@ -125,4 +125,18 @@ public class StringCalculatorTest {
         assertThat(message, is("Negatives not allowed: -2 -6 -7 "));
     }
 
+    @Test
+    public void shouldIgnoreArgumentsOver1000() {
+        String arguments = "1,1001,2,9001";
+
+        int sum = 0;
+        try {
+            sum = stringCalculator.Add(arguments);
+        } catch (NegativeArgumentException e) {
+            e.printStackTrace();
+        }
+
+        assertThat(sum, is(3));
+    }
+
 }
