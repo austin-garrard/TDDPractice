@@ -6,17 +6,13 @@ import java.util.Scanner;
 public class StringCalculator {
 
     public int Add(String numbers) {
-        int firstNumber = 0;
-        int secondNumber = 0;
-
+        int sum = 0;
         Scanner scanner = new Scanner(numbers);
         scanner.useDelimiter(",");
 
-        if(scanner.hasNextInt())
-            firstNumber = scanner.nextInt();
-        if(scanner.hasNextInt())
-            secondNumber = scanner.nextInt();
+        while(scanner.hasNextInt())
+            sum += scanner.nextInt();
 
-        return firstNumber + secondNumber;
+        return sum;
     }
 }

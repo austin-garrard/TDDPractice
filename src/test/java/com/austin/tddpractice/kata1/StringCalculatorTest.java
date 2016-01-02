@@ -42,4 +42,19 @@ public class StringCalculatorTest {
         assertThat(sum, is(3));
     }
 
+    @Test
+    public void shouldSumNArguments() {
+        String arguments = "1,2,3";
+
+        int sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(6));
+
+        arguments = "1,2,3,4,5,6,7";
+
+        sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(28));
+    }
+
 }
