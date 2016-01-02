@@ -24,4 +24,13 @@ public class StringCalculatorTest {
         assertThat(sum, is(0));
     }
 
+    @Test
+    public void shouldSumOneArgument() {
+        String arguments = "1";
+
+        int sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(1));
+    }
+
 }
