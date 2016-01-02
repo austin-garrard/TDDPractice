@@ -57,4 +57,21 @@ public class StringCalculatorTest {
         assertThat(sum, is(28));
     }
 
+    @Test
+    public void shouldHandleNewlinesAsDelimiters() {
+        String arguments = "1\n2,3";
+
+        int sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(6));
+    }
+
+    @Test
+    public void shouldSupportCustomDelimiters() {
+        String arguments = "//;\n1;2";
+        int sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(3));
+    }
+
 }
