@@ -10,6 +10,14 @@ public class StringCalculator {
             return 0;
 
         Scanner scanner = new Scanner(numbers);
-        return scanner.nextInt();
+        scanner.useDelimiter(",");
+
+        int firstNumber = scanner.nextInt();
+        int secondNumber = 0;
+        if(scanner.hasNextInt()) {
+            secondNumber = scanner.nextInt();
+        }
+
+        return firstNumber + secondNumber;
     }
 }

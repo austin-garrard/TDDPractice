@@ -33,4 +33,13 @@ public class StringCalculatorTest {
         assertThat(sum, is(1));
     }
 
+    @Test
+    public void shouldSumTwoArguments() {
+        String arguments = "1,2";
+
+        int sum = stringCalculator.Add(arguments);
+
+        assertThat(sum, is(3));
+    }
+
 }
