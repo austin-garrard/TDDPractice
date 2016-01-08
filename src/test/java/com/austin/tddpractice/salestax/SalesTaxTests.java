@@ -28,23 +28,26 @@ public class SalesTaxTests {
     public void shouldCalculateNonExemptDomesticSalesTax() {
         when(purchase.getItem()).thenReturn("");
         when(purchase.getBasePrice()).thenReturn(12.50);
+        when(purchase.isDomestic()).thenReturn(true);
 
-        assertThat(salesTax.of(purchase, false), is(1.25));
+        assertThat(salesTax.of(purchase), is(1.25));
     }
 
     @Test
     public void shouldCalculateNonExemptImportedSalesTax() {
         when(purchase.getItem()).thenReturn("");
         when(purchase.getBasePrice()).thenReturn(10.0);
+        when(purchase.isDomestic()).thenReturn(false);
 
-        assertThat(salesTax.of(purchase, true), is(1.5));
+        assertThat(salesTax.of(purchase), is(1.5));
     }
 
     @Test
     public void shouldRoundUpToTheNearestPoint05() {
         when(purchase.getItem()).thenReturn("");
         when(purchase.getBasePrice()).thenReturn(14.99);
+        when(purchase.isDomestic()).thenReturn(true);
 
-        assertThat(salesTax.of(purchase, false), is(1.5));
+        assertThat(salesTax.of(purchase), is(1.5));
     }
 }

@@ -14,14 +14,14 @@ public class SalesTax {
         this.exemptItems = exemptItems;
     }
 
-    public double of(Purchase purchase, boolean imported) {
+    public double of(Purchase purchase) {
         if(isExempt(purchase.getItem()))
             return 0.0;
 
         double tax = purchase.getBasePrice() * domesticRate;
 
-        if(imported) {
-            tax += purchase.getBasePrice()*importedRate;
+        if(!purchase.isDomestic()) {
+            tax += purchase.getBasePrice() * importedRate;
         }
 
         return round(tax);
