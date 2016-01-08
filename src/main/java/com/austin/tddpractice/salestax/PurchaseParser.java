@@ -6,11 +6,9 @@ import java.util.List;
 
 public class PurchaseParser {
     private PurchaseFactory purchaseFactory;
-    private List<String> exemptItems;
 
-    public PurchaseParser(PurchaseFactory purchaseFactory, List<String> exemptItems) {
+    public PurchaseParser(PurchaseFactory purchaseFactory) {
         this.purchaseFactory = purchaseFactory;
-        this.exemptItems = exemptItems;
     }
 
     public Purchase parse(String purchaseString) {
@@ -24,9 +22,7 @@ public class PurchaseParser {
 
         double basePrice = Double.parseDouble(tokens.remove(0));
 
-        boolean exempt = isExempt(item);
-
-        return purchaseFactory.create(count, item, basePrice, domestic, exempt);
+        return purchaseFactory.create(count, item, basePrice, domestic);
     }
 
     private boolean isDomestic(List<String> tokens) {
@@ -39,15 +35,6 @@ public class PurchaseParser {
         return domestic;
     }
 
-
-    private boolean isExempt(String item) {
-        for(String exemptItem : exemptItems) {
-            if(item.equals(exemptItem)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private String parseItem(List<String> tokens) {
         String item = "";

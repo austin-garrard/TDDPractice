@@ -15,4 +15,35 @@ public class Purchase {
         this.domestic = domestic;
         this.exempt = exempt;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        Purchase otherPurchase = (Purchase)object;
+
+        return count == otherPurchase.getCount()
+                && item.equals(otherPurchase.getItem())
+                && basePrice == otherPurchase.getBasePrice()
+                && domestic == otherPurchase.isDomestic()
+                && exempt == otherPurchase.isExempt();
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public double getBasePrice() {
+        return basePrice;
+    }
+
+    public boolean isDomestic() {
+        return domestic;
+    }
+
+    public boolean isExempt() {
+        return exempt;
+    }
 }
