@@ -3,13 +3,21 @@ package com.austin.tddpractice.salestax;
 
 public class SalesTax {
     private double rate;
+    private boolean imported;
+    private final double importedRate = .05;
 
-    public SalesTax(double v) {
-        rate = v;
+    public SalesTax(double rate, boolean imported) {
+        this.rate = rate;
+        this.imported = imported;
     }
 
-    public double of(double v) {
+    public double of(double amount) {
+        double tax = amount * rate;
 
-        return 1.25;
+        if(imported) {
+            tax += amount*importedRate;
+        }
+
+        return  tax;
     }
 }

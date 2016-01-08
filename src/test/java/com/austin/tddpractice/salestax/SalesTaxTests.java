@@ -9,17 +9,22 @@ import static org.junit.Assert.fail;
 
 public class SalesTaxTests {
 
-    private SalesTax salesTax;
+    private SalesTax domesticSalesTax;
+    private SalesTax importedSalesTax;
 
     @Before
     public void setup() {
-        salesTax = new SalesTax(.1);
+        domesticSalesTax = new SalesTax(.1, false);
+        importedSalesTax = new SalesTax(.1, true);
     }
 
     @Test
     public void shouldCalculateBaseSalesTax() {
-        assertThat(salesTax.of(12.50), is(1.25));
+        assertThat(domesticSalesTax.of(12.50), is(1.25));
     }
 
-
+    @Test
+    public void shouldCalculateImportedSalesTax() {
+        assertThat(importedSalesTax.of(10), is(1.5));
+    }
 }
