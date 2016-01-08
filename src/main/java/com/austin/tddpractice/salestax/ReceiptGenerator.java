@@ -17,7 +17,7 @@ public class ReceiptGenerator {
         String item = parseItem();
 
         double price = scanner.nextDouble();
-        double tax = salesTax.of(price);
+        double tax = salesTax.of(price, false);
         double total = price + tax;
 
 

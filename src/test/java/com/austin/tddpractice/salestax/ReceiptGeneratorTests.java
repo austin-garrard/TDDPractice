@@ -28,7 +28,7 @@ public class ReceiptGeneratorTests {
     @Test
     public void shouldApplySalesTaxToNormalGoods() {
         SalesTax salesTax = mock(SalesTax.class);
-        when(salesTax.of(anyFloat())).thenReturn(1.50);
+        when(salesTax.of(anyFloat(), anyBoolean())).thenReturn(1.50);
         receiptGenerator = new ReceiptGenerator(new Scanner("1 music CD at 14.99\n"), salesTax);
 
         String receipt = receiptGenerator.getReceipt();

@@ -9,27 +9,25 @@ import static org.junit.Assert.fail;
 
 public class SalesTaxTests {
 
-    private SalesTax domesticSalesTax;
-    private SalesTax importedSalesTax;
+    private SalesTax salesTax;
 
     @Before
     public void setup() {
-        domesticSalesTax = new SalesTax(.1, false);
-        importedSalesTax = new SalesTax(.1, true);
+        salesTax = new SalesTax(.1, .05);
     }
 
     @Test
-    public void shouldCalculateBaseSalesTax() {
-        assertThat(domesticSalesTax.of(12.50), is(1.25));
+    public void shouldCalculateDomesticSalesTax() {
+        assertThat(salesTax.of(12.50, false), is(1.25));
     }
 
     @Test
     public void shouldCalculateImportedSalesTax() {
-        assertThat(importedSalesTax.of(10), is(1.5));
+        assertThat(salesTax.of(10, true), is(1.5));
     }
 
     @Test
     public void shouldRoundUpToTheNearestPoint05() {
-        assertThat(domesticSalesTax.of(14.99), is(1.5));
+        assertThat(salesTax.of(14.99, false), is(1.5));
     }
 }

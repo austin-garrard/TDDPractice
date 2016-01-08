@@ -2,17 +2,16 @@ package com.austin.tddpractice.salestax;
 
 
 public class SalesTax {
-    private double rate;
-    private boolean imported;
-    private final double importedRate = .05;
+    private double domesticRate;
+    private double importedRate;
 
-    public SalesTax(double rate, boolean imported) {
-        this.rate = rate;
-        this.imported = imported;
+    public SalesTax(double domesticRate, double importedRate) {
+        this.domesticRate = domesticRate;
+        this.importedRate = importedRate;
     }
 
-    public double of(double amount) {
-        double tax = amount * rate;
+    public double of(double amount, boolean imported) {
+        double tax = amount * domesticRate;
 
         if(imported) {
             tax += amount*importedRate;
