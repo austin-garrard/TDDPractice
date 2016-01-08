@@ -27,4 +27,9 @@ public class SalesTaxTests {
     public void shouldCalculateImportedSalesTax() {
         assertThat(importedSalesTax.of(10), is(1.5));
     }
+
+    @Test
+    public void shouldRoundUpToTheNearestPoint05() {
+        assertThat(domesticSalesTax.of(14.99), is(1.5));
+    }
 }

@@ -18,6 +18,16 @@ public class SalesTax {
             tax += amount*importedRate;
         }
 
-        return  tax;
+        return round(tax);
     }
+
+    private double round(double tax) {
+        int roundedTax = (int)(tax*100);
+        while(roundedTax % 5 != 0) {
+            roundedTax++;
+        }
+        return roundedTax / 100.0;
+    }
+
+
 }
