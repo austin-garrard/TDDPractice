@@ -3,31 +3,48 @@ package com.austin.tddpractice.salestax;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
 
 public class SalesTaxTests {
 
     private SalesTax salesTax;
+    private Purchase purchase;
 
     @Before
     public void setup() {
-        salesTax = new SalesTax(.1, .05);
+        List<String> exemptItems = new ArrayList<String>();
+        exemptItems.add("book");
+        exemptItems.add("headache pills");
+        salesTax = new SalesTax(.1, .05, exemptItems);
+        purchase = mock(Purchase.class);
     }
 
     @Test
-    public void shouldCalculateDomesticSalesTax() {
-        assertThat(salesTax.of(12.50, false), is(1.25));
+    public void shouldCalculateNonExemptDomesticSalesTax() {
+        when(purchase.getItem()).thenReturn("");
+        when(purchase.getBasePrice()).thenReturn(12.50);
+
+        assertThat(salesTax.of(purchase, false), is(1.25));
     }
 
     @Test
-    public void shouldCalculateImportedSalesTax() {
-        assertThat(salesTax.of(10, true), is(1.5));
+    public void shouldCalculateNonExemptImportedSalesTax() {
+        when(purchase.getItem()).thenReturn("");
+        when(purchase.getBasePrice()).thenReturn(10.0);
+
+        assertThat(salesTax.of(purchase, true), is(1.5));
     }
 
     @Test
     public void shouldRoundUpToTheNearestPoint05() {
-        assertThat(salesTax.of(14.99, false), is(1.5));
+        when(purchase.getItem()).thenReturn("");
+        when(purchase.getBasePrice()).thenReturn(14.99);
+
+        assertThat(salesTax.of(purchase, false), is(1.5));
     }
 }

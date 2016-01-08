@@ -3,15 +3,6 @@ package com.austin.tddpractice.salestax;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class PurchaseParserTests {

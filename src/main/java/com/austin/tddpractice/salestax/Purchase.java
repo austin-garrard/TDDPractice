@@ -6,14 +6,12 @@ public class Purchase {
     private final String item;
     private double basePrice;
     private final boolean domestic;
-    private boolean exempt;
 
-    public Purchase(int count, String item, double basePrice, boolean domestic, boolean exempt) {
+    public Purchase(int count, String item, double basePrice, boolean domestic) {
         this.count = count;
         this.item = item;
         this.basePrice = basePrice;
         this.domestic = domestic;
-        this.exempt = exempt;
     }
 
     @Override
@@ -23,8 +21,7 @@ public class Purchase {
         return count == otherPurchase.getCount()
                 && item.equals(otherPurchase.getItem())
                 && basePrice == otherPurchase.getBasePrice()
-                && domestic == otherPurchase.isDomestic()
-                && exempt == otherPurchase.isExempt();
+                && domestic == otherPurchase.isDomestic();
     }
 
     public int getCount() {
@@ -43,7 +40,4 @@ public class Purchase {
         return domestic;
     }
 
-    public boolean isExempt() {
-        return exempt;
-    }
 }
