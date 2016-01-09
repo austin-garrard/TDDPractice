@@ -29,16 +29,15 @@ public class Purchase {
     }
 
     public double getSalesTax() {
-        if(isExempt(item))
-            return 0.0;
+        double domesticTax = isExempt(item)
+                ? 0.0
+                : basePrice * domesticRate;
 
-        double tax = basePrice * domesticRate;
+        double importedTax = domestic
+                ? 0.0
+                : basePrice * importedRate;
 
-        if(!domestic) {
-            tax += basePrice * importedRate;
-        }
-
-        return round(tax);
+        return round(domesticTax + importedTax);
     }
 
     public double getTotal() {
