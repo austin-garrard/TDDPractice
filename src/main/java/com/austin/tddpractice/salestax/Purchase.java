@@ -1,43 +1,66 @@
 package com.austin.tddpractice.salestax;
 
 
+import java.util.List;
+
 public class Purchase {
     private int count;
     private final String item;
     private double basePrice;
     private final boolean domestic;
+    private double domesticRate;
+    private double importedRate;
+    private List<String> exemptItems;
 
-    public Purchase(int count, String item, double basePrice, boolean domestic) {
+    public Purchase(int count, String item, double basePrice, boolean domestic, double domesticRate, double importedRate, List<String> exemptItems) {
         this.count = count;
         this.item = item;
         this.basePrice = basePrice;
         this.domestic = domestic;
+        this.domesticRate = domesticRate;
+        this.importedRate = importedRate;
+        this.exemptItems = exemptItems;
     }
+
 
     @Override
-    public boolean equals(Object object) {
-        Purchase otherPurchase = (Purchase)object;
-
-        return count == otherPurchase.getCount()
-                && item.equals(otherPurchase.getItem())
-                && basePrice == otherPurchase.getBasePrice()
-                && domestic == otherPurchase.isDomestic();
+    public String toString() {
+        return String.format("%d %s: %.2f", count, item, getTotal());
     }
 
-    public int getCount() {
-        return count;
+    public double getSalesTax() {
+        if(isExempt(item))
+            return 0.0;
+
+        double tax = basePrice * domesticRate;
+
+        if(!domestic) {
+            tax += basePrice * importedRate;
+        }
+
+        return round(tax);
     }
 
-    public String getItem() {
-        return item;
+    public double getTotal() {
+        return basePrice + getSalesTax();
     }
 
-    public double getBasePrice() {
-        return basePrice;
+    private double round(double tax) {
+        int roundedTax = (int)(tax*100);
+        while(roundedTax % 5 != 0) {
+            roundedTax++;
+        }
+        return roundedTax / 100.0;
     }
 
-    public boolean isDomestic() {
-        return domestic;
+    private boolean isExempt(String item) {
+        for(String exemptItem : exemptItems) {
+            if(item.equals(exemptItem)) {
+                return true;
+            }
+        }
+        return false;
     }
+
 
 }
