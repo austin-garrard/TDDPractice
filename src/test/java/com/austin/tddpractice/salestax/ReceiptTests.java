@@ -20,11 +20,11 @@ public class ReceiptTests {
 
     @Before
     public void setup() {
-        purchaseParser = mock(PurchaseParser.class);
-
         text = "1 book at 12.49\n" +
                 "1 music CD at 14.99\n" +
                 "1 chocolate bar at 0.85";
+
+        purchaseParser = mock(PurchaseParser.class);
 
         purchaseMocks = new ArrayList<Purchase>();
         for(int i = 0; i < 3; i++) {
@@ -62,6 +62,24 @@ public class ReceiptTests {
         receipt = new Receipt(text, purchaseParser);
 
         assertThat(receipt.getTotal(), is(3.0));
+    }
+
+    @Test
+    public void shouldPrintDetails() {
+        for(Purchase p: purchaseMocks) {
+            when(p.toString()).thenReturn("boop");
+            when(p.getSalesTax()).thenReturn(1.0);
+            when(p.getTotal()).thenReturn(2.0);
+        }
+
+        receipt = new Receipt(text, purchaseParser);
+
+        assertThat(receipt.toString(), is("boop\n" +
+                                          "boop\n" +
+                                          "boop\n" +
+                                          "Sales Taxes: 3.00\n" +
+                                          "Total: 6.00"));
+
     }
 
 
