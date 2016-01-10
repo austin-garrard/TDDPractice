@@ -14,10 +14,10 @@ public class Receipt {
     public Receipt(String text, PurchaseParser purchaseParser) {
         this.text = text;
         this.purchaseParser = purchaseParser;
-        create();
+        init();
     }
 
-    private void create() {
+    private void init() {
         totalSalesTax = 0.0;
         total = 0.0;
         purchases = new ArrayList<Purchase>();
