@@ -2,69 +2,83 @@ package com.austin.tddpractice.kata1;
 
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringCalculator {
 
-    public int Add(String numbers) throws NegativeArgumentException {
-        Scanner scanner = getScanner(numbers);
-
-        StringAdder stringAdder = new StringAdder(scanner).invoke();
-        List<Integer> negativeArguments = stringAdder.getNegativeArguments();
-        int sum = stringAdder.getSum();
-
-        if(negativeArguments.size() > 0) {
-            throw new NegativeArgumentException(negativeArguments);
+    public int add(String text) {
+        if(text.length() > 0) {
+            String[] numbers = tokenize(text);
+            ArrayList<Integer> intValues = mapToIntegers(numbers);
+            checkForNegatives(intValues);
+            return sumNumbers(intValues);
         }
+        return 0;
+    }
 
+    private String[] tokenize(String text) {
+        if(text.startsWith("//[")) {
+            return tokenizeWithVariableLengthCustomDelimiter(text);
+        }
+        else if(text.startsWith("//")) {
+            return tokenizeWithCustomDelimiter(text);
+        }
+        else {
+            return text.split("\n|,");
+        }
+    }
+
+    private String[] tokenizeWithCustomDelimiter(String text) {
+        Matcher matcher = Pattern.compile("//(.)\n(.*)").matcher(text);
+        matcher.matches();
+        return matcher.group(2).split("\n|,|" + matcher.group(1));
+    }
+
+    private String[] tokenizeWithVariableLengthCustomDelimiter(String text) {
+        Matcher matcher = Pattern.compile("//\\[(.*)]\n(.*)").matcher(text);
+        matcher.matches();
+        return matcher.group(2).split("\n|,|" + Pattern.quote(matcher.group(1)));
+    }
+
+    private int sumNumbers(ArrayList<Integer> numbers) {
+        int sum = 0;
+        for(Integer number : numbers) {
+            sum += number > 1000 ? 0 : number;
+        }
         return sum;
     }
 
-    private Scanner getScanner(String numbers) {
-        String delimiterString = ",|\n";
-        int newlinePos = 0;
-        if(numbers.indexOf("//") == 0) {
-            newlinePos = numbers.indexOf("\n");
-            String customDelimiter = numbers.substring(2, newlinePos);
-            delimiterString += "|" + customDelimiter;
+    private ArrayList<Integer> mapToIntegers(String[] numbers) {
+        ArrayList<Integer> intValues = new ArrayList<Integer>();
+        for(String number : numbers) {
+            intValues.add(Integer.parseInt(number));
         }
-
-        Scanner scanner = new Scanner(numbers.substring(newlinePos));
-        scanner.useDelimiter(delimiterString);
-        return scanner;
+        return intValues;
     }
 
-    private class StringAdder {
-        private Scanner scanner;
-        private int sum;
-        private List<Integer> negativeArguments;
+    private void checkForNegatives(ArrayList<Integer> numbers) {
+        ArrayList<Integer> negatives = new ArrayList<Integer>();
+        findNegatives(numbers, negatives);
 
-        public StringAdder(Scanner scanner) {
-            this.scanner = scanner;
+        if(negatives.size() > 0) {
+            throwNegativeNumberError(negatives);
         }
+    }
 
-        public int getSum() {
-            return sum;
+    private void throwNegativeNumberError(ArrayList<Integer> negatives) {
+        String message = "Negatives not allowed: ";
+        for(Integer negative : negatives) {
+            message += negative + " ";
         }
+        throw new RuntimeException(message);
+    }
 
-        public List<Integer> getNegativeArguments() {
-            return negativeArguments;
-        }
-
-        public StringAdder invoke() {
-            sum = 0;
-            negativeArguments = new ArrayList<Integer>();
-            while(scanner.hasNextInt()) {
-                int next = scanner.nextInt();
-                if(next < 0)
-                    negativeArguments.add(next);
-                else if(next > 1000)
-                    continue;
-                else
-                    sum += next;
+    private void findNegatives(ArrayList<Integer> numbers, ArrayList<Integer> negatives) {
+        for(Integer number : numbers) {
+            if(number < 0) {
+                negatives.add(number);
             }
-            return this;
         }
     }
 }

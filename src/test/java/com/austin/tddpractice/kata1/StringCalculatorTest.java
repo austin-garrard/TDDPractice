@@ -5,138 +5,76 @@ import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class StringCalculatorTest {
 
     StringCalculator stringCalculator;
 
     @Before
-    public void setUp() {
+    public void setup() {
         stringCalculator = new StringCalculator();
     }
 
     @Test
-    public void shouldSumZeroArguments() {
-        String arguments = "";
-
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(0));
+    public void shouldReturnZeroForEmptyString() {
+        assertThat(stringCalculator.add(""), is(0));
     }
 
     @Test
-    public void shouldSumOneArgument() {
-        String arguments = "1";
-
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(1));
+    public void shouldReturnNumberForSingleNumber() {
+        assertThat(stringCalculator.add("1"), is(1));
     }
 
     @Test
-    public void shouldSumTwoArguments() {
-        String arguments = "1,2";
-
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(3));
+    public void shouldReturnSumForTwoNumbersSeparatedByCommas() {
+        assertThat(stringCalculator.add("1,2"), is(3));
     }
 
     @Test
-    public void shouldSumNArguments() {
-        String arguments = "1,2,3";
-
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(6));
-
-        arguments = "1,2,3,4,5,6,7";
-
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(28));
+    public void shouldReturnSumForAnyNumberOfNumbersSeparatedByCommas() {
+        assertThat(stringCalculator.add("1,2,3,4"), is(10));
     }
 
     @Test
-    public void shouldHandleNewlinesAsDelimiters() {
-        String arguments = "1\n2,3";
-
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(6));
+    public void shouldReturnSumForThreeNumbersSeparatedByCommasAndNewlines() {
+        assertThat(stringCalculator.add("1\n2,3"), is(6));
     }
 
     @Test
-    public void shouldSupportCustomDelimiters() {
-        String arguments = "//;\n1;2";
-        int sum = 0;
-        try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
-        }
-
-        assertThat(sum, is(3));
+    public void shouldReturnSumForTwoNumbersSeparatedByCustomDelimiter() {
+        assertThat(stringCalculator.add("//;\n1;2"), is(3));
     }
 
     @Test
-    public void shouldReportNegativeArguments() {
-        String arguments = "1,-2,3,4,5,-6,-7";
-
-        int sum = 0;
-        String message = "";
+    public void shouldThrowExceptionForNegativeNumbers() {
         try {
-            sum = stringCalculator.Add(arguments);
+            stringCalculator.add("-1");
+            fail("RuntimeException expected.");
         }
-        catch(NegativeArgumentException exception) {
-            message = exception.getMessage();
+        catch(RuntimeException exc) {
+            //test passes
         }
-
-        assertThat(sum, is(0));
-        assertThat(message, is("Negatives not allowed: -2 -6 -7 "));
     }
 
     @Test
-    public void shouldIgnoreArgumentsOver1000() {
-        String arguments = "1,1001,2,9001";
-
-        int sum = 0;
+    public void shouldShowNegativeNumbersInExceptionMessage() {
         try {
-            sum = stringCalculator.Add(arguments);
-        } catch (NegativeArgumentException e) {
-            e.printStackTrace();
+            stringCalculator.add("-1,2,-3");
         }
+        catch(RuntimeException exc) {
+            assertThat(exc.getMessage(), is("Negatives not allowed: -1 -3 "));
+        }
+    }
 
-        assertThat(sum, is(3));
+    @Test
+    public void shouldIgnoreNumbersLargerThan1000() {
+        assertThat(stringCalculator.add("2,1001"), is(2));
+    }
+
+    @Test
+    public void shouldHandleDelimitersOfAnyLength() {
+        assertThat(stringCalculator.add("//[***]\n1***2***3"), is(6));
     }
 
 }
