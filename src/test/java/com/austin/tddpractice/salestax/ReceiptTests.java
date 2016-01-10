@@ -53,7 +53,16 @@ public class ReceiptTests {
     }
 
 
+    @Test
+    public void shouldCalculateTotalPrice() {
+        for(Purchase p : purchaseMocks) {
+            when(p.getTotal()).thenReturn(1.0);
+        }
 
+        receipt = new Receipt(text, purchaseParser);
+
+        assertThat(receipt.getTotal(), is(3.0));
+    }
 
 
 }
